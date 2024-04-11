@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'product',
     'rest_framework',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -71,14 +72,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cart.wsgi.application'
 
+AUTH_USER_MODEL = 'user.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cartdb',
+        'USER': 'jenishaneupane',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '5432', 
     }
 }
 
