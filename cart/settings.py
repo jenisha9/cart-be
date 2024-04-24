@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'product',
     'rest_framework',
+    'rest_framework.authtoken',
     'user',
+    
 ]
 
 MIDDLEWARE = [
@@ -50,9 +53,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'cart.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication', ],
+}
 
 TEMPLATES = [
     {
@@ -73,6 +82,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cart.wsgi.application'
 
 AUTH_USER_MODEL = 'user.CustomUser'
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
