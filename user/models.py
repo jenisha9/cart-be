@@ -1,12 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from product.models import Product
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.base_user import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self,email,password=None,**extra_fields):
         if not email:
-            raise ValueError("Email is required  is required")
+            raise ValueError("Email is required")
         email = self.normalize_email(email)
         # extra_fields['email']=self.normalize_email(extra_fields['email'])
         user=self.model(email=email,**extra_fields)
@@ -38,11 +39,13 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
-    
-class Cart(models.Model):
-    product = models.ManyToManyField("product.Product")
-    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
-    added_date = models.DateTimeField(auto_now_add=True)
-    isAuthenticated=models.BooleanField(default=False)
 
+class Cart(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    added_date = models.DateTimeField(auto_now_add=True)
+
+class CartLine(models.Model): 
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_lines")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
  
