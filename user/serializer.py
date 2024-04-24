@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser,Cart
+from .models import CartLine, CustomUser,Cart
 # from product.serializer import ProductSerializer
 from rest_framework.response import Response
 class UserSerializer(serializers.ModelSerializer):
@@ -18,17 +18,14 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
         
 class CartSerializer(serializers.ModelSerializer):
+    product_id = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )  # Field to accept product id from frontend
+    quantity = serializers.IntegerField(default=1)
+
     class Meta:
-        model = Cart
-        fields = ['product', 'user', 'added_date']
-    
-    def destroy(self,request,pk):
-        try:
-            cart=Cart.objects.get(pk=pk)
-            cart.delete()
-            return Response({'message':'Deleted'})
-        except Cart.DoesNotExist:
-            return Response({'message':'Cart not found'})
+        model = CartLine
+        fields = ["product_id", "quantity"]
 
 
     
