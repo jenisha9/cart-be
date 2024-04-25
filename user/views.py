@@ -85,14 +85,14 @@ class CartView(viewsets.ModelViewSet):
         serializer=CartSerializer(cart_line)
         return Response(serializer.data)
 
-    # @action(detail=False, methods=["DELETE"], url_path="remove-from-cart")
-    # def remove_from_cart(request):
-    #     user = request.user
-    #     product_id = request.data.get("product_id")
+    @action(detail=False, methods=["POST"], url_path="remove-from-cart")
+    def remove_from_cart(self, request):
+        user = request.user
+        product_id = request.data.get("product_id")
 
-    #     try:
-    #         cart_line = user.cart.cart_lines.get(product_id=product_id)
-    #         cart_line.delete()
-    #         return Response({"message": "Item removed from cart."}, status=status.HTTP_204_NO_CONTENT)
-    #     except CartLine.DoesNotExist:
-    #         return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            cart_line = user.cart.cart_lines.get(product_id=product_id)
+            cart_line.delete()
+            return Response({"message": "Item removed from cart."}, status=status.HTTP_204_NO_CONTENT)
+        except CartLine.DoesNotExist:
+            return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
